@@ -17,7 +17,7 @@ export const ResultsContextProvider = ({ children }) => {
         "x-user-agent": "desktop",
         "x-proxy-location": "EU",
         "x-rapidapi-host": "google-search3.p.rapidapi.com",
-        "x-rapidapi-key": "eb7ee4d12fmshf4411ac76263c0ap12baf2jsn56248111f8e7",
+        "x-rapidapi-key": "use-your-key",
       },
     });
     const data = await response.json();
@@ -33,8 +33,6 @@ export const ResultsContextProvider = ({ children }) => {
     }
 
     setIsLoading(false);
-
-    console.log(results);
   };
 
   // change search term.
