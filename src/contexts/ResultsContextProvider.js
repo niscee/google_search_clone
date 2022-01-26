@@ -11,7 +11,7 @@ export const ResultsContextProvider = ({ children }) => {
   // fetching api regarding user search.
   const getResults = async (type) => {
     setIsLoading(true);
-    const response = await fetch(`${BASEURL}/${type}/q=${searchTerm}&num=50`, {
+    const response = await fetch(`${BASEURL}/${type}/q=${searchTerm}&num=30`, {
       method: "GET",
       headers: {
         "x-user-agent": "desktop",
@@ -21,22 +21,30 @@ export const ResultsContextProvider = ({ children }) => {
       },
     });
     const data = await response.json();
-    console.log(data);
 
     if (type === "search") {
       setResults(data.results);
-    } else if (type === "images") {
+    }
+    if (type === "images") {
       setResults(data.image_results);
-    } else if (type === "news") {
+    }
+    if (type === "news") {
       setResults(data.entries);
     }
 
     setIsLoading(false);
+
+    console.log(results);
+  };
+
+  // change search term.
+  const searchTermHandler = (term) => {
+    setSearchTerm(term);
   };
 
   return (
     <ResultContext.Provider
-      value={{ getResults, results, searchTerm, setSearchTerm, isLoading }}
+      value={{ getResults, results, searchTerm, searchTermHandler, isLoading }}
     >
       {children}
     </ResultContext.Provider>

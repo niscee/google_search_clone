@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from "react";
 import { useLocation } from "react-router";
 import { ResultContext } from "../contexts/ResultsContextProvider";
 import Loading from "./Loading";
-import { Link, Outlet } from "react-router-dom";
 
 const Results = () => {
   const resultContext = useContext(ResultContext);
@@ -10,13 +9,14 @@ const Results = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(searchTerm);
     if (location.pathname === "/image") {
-      // getResults("images");
+      getResults("images");
+    } else if (location.pathname === "/") {
+      getResults("search");
     } else if (location.pathname === "/news") {
-      // getResults("news");
+      getResults("news");
     } else {
-      // getResults("search");
+      getResults("search");
     }
   }, [searchTerm, location.pathname]);
 
@@ -27,20 +27,38 @@ const Results = () => {
   const SearchLayout = () => {
     return (
       <div className="flex flex-wrap justify-between space-y-6 sm:px-56">
-        {results?.map(({ link, title }, index) => {
+        {results ? (
+          results.map((result, index) => {
+            return (
+              <div key={index} className="md:w-2/5 w-full">
+                <a href={result.link} target="_blank" rel="noreferrer">
+                  <p className="text-lg hover:underline dark:text-blue-300 text-blue-700">
+                    {result.title}
+                  </p>
+                </a>
+                <p className="text-sm dark:text-white-300">
+                  {result.description}
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <p>we dont have it</p>
+        )}
+        {/* {results?.map(({ link, title }, index) => {
           return (
             <div key={index} className="md:w-2/5 w-full">
+              <p className="text-sm dark:text-blue-300">
+                {link.length > 30 ? link.substring(0, 30) : link}
+              </p>
               <a href={link} target="_blank" rel="noreferrer">
-                <p className="text-sm dark:text-blue-300">
-                  {link.length > 30 ? link.substring(0, 30) : link}
-                </p>
                 <p className="text-lg hover:underline dark:text-blue-300 text-blue-700">
                   {title}
                 </p>
               </a>
             </div>
           );
-        })}
+        })} */}
       </div>
     );
   };
@@ -49,11 +67,11 @@ const Results = () => {
   const NewsLayout = () => {
     return (
       <div className="flex flex-wrap justify-between space-y-6 sm:px-56 text-center">
-        {results?.map(({ links, source, id, title }, index) => {
+        {results?.map(({ links, link, source, id, title }, index) => {
           return (
-            <div key={id} className="md:w-2/5 w-full">
+            <div key={index} className="md:w-2/5 w-full">
               <a
-                href={source?.href}
+                href={link}
                 target="_blank"
                 rel="noreferrer"
                 className="hover:underline"
@@ -98,15 +116,29 @@ const Results = () => {
 
   switch (location.pathname) {
     case "/":
-      return <SearchLayout />;
-    case "/search":
-      return <SearchLayout />;
+      return (
+        <div className="px-4 pb-32">
+          <SearchLayout />
+        </div>
+      );
     case "/news":
-      return <NewsLayout />;
+      return (
+        <div className="px-4 pb-32">
+          <NewsLayout />
+        </div>
+      );
     case "/image":
-      return <ImageLayout />;
+      return (
+        <div className="px-4 pb-32">
+          <ImageLayout />
+        </div>
+      );
     default:
-      return <p>error</p>;
+      return (
+        <div className="px-4 pb-32">
+          <p>error</p>
+        </div>
+      );
   }
 };
 

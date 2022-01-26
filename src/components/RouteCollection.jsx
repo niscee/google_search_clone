@@ -11,7 +11,7 @@ const RouteCollection = () => {
         {routes_list.map((list, key) => {
           return <Route key={key} path={list} element={<Results />} />;
         })}
-        {/* <Route path="*" element={<NoMatch />} /> */}
+        <Route path="*" element={<NoMatch />} />
       </Routes>
     </div>
   );
